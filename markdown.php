@@ -13,7 +13,7 @@
 
 
 define( 'MARKDOWN_VERSION',  "1.0.1o" ); # Sun 8 Jan 2012
-define( 'MARKDOWNEXTRA_VERSION',  "1.2.5" ); # Sun 8 Jan 2012
+define( 'MARKDOWNEXTRA_VERSION',  "1.2.6" ); # Sun 8 Jan 2012
 
 
 #
@@ -64,6 +64,37 @@ function Markdown($text) {
 	return $parser->transform($text);
 }
 
+/**
+ * Parse markdown without wrapping paragraphs for titles and link texts
+ * 
+ * Example : 
+ * 
+ *     <h1><?php echo MarkdownUnwrapped($text); ?></h1>
+ * 
+ * Or
+ *     <a href="#"><?php echo MarkdownUnwrapped($text); ?></a>
+ * 
+ * @param [type] $text [description]
+ */
+function MarkdownUnwrapped($text) {
+#
+# Initialize the parser and return the result of its transform method.
+#
+	# Setup static parser variable.
+	static $parser;
+	if (!isset($parser)) {
+		$parser_class = MARKDOWN_PARSER_CLASS;
+		$parser = new $parser_class;
+
+		/*
+		 * Avoid wrapping inline HTML in Block tags like paragraphs
+		 */
+		$parser->unwrapParagraphs = true;
+	}
+
+	# Transform text using parser.
+	return $parser->transform($text);
+}
 
 ### WordPress Plugin Interface ###
 
@@ -1690,6 +1721,7 @@ class MarkdownExtra_Parser extends Markdown_Parser {
 	# Predefined abbreviations.
 	var $predef_abbr = array();
 
+	var $unwrapParagraphs = false;
 
 	function MarkdownExtra_Parser() {
 	#
@@ -2624,7 +2656,7 @@ class MarkdownExtra_Parser extends Markdown_Parser {
 			# Clean tag hashes & block tag hashes are left alone.
 			$is_p = !preg_match('/^B\x1A[0-9]+B|^C\x1A[0-9]+C$/', $value);
 			
-			if ($is_p) {
+			if ($is_p && $this->unwrapParagraphs === false) {
 				$value = "<p>$value</p>";
 			}
 			$grafs[$key] = $value;
@@ -2698,7 +2730,7 @@ class MarkdownExtra_Parser extends Markdown_Parser {
 		if (!empty($this->footnotes_ordered)) {
 			$text .= "\n\n";
 			$text .= "<div class=\"footnotes\">\n";
-			$text .= "<hr". $this->empty_element_suffix ."\n";
+			//$text .= "<hr". $this->empty_element_suffix ."\n";
 			$text .= "<ol>\n\n";
 			
 			$attr = " rev=\"footnote\"";
