@@ -13,7 +13,7 @@
 
 
 define( 'MARKDOWN_VERSION',  "1.0.1o" ); # Sun 8 Jan 2012
-define( 'MARKDOWNEXTRA_VERSION',  "1.2.6" ); # Sun 8 Jan 2012
+define( 'MARKDOWNEXTRA_VERSION',  "1.2.6" ); # Fri 28 June 2013
 
 
 #

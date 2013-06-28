@@ -1,7 +1,9 @@
 PHP Markdown Extra
 ==================
 
-Version 1.2.5 - Sun 8 Jan 2012
+Version 1.2.6 - Fri 28 Jun 2013
+
+Forked by REZO ZERO
 
 by Michel Fortin
 <http://michelf.com/>
@@ -130,6 +132,11 @@ built to parse HTML, you should filter the text *after* the Markdown
 function call. This is an example with [PHP SmartyPants][psp]:
 
     $my_html = SmartyPants(Markdown($my_text));
+
+You can even parse Markdown without wrapping paragraphs if you need to parse inside block elements like titles or inline elements like links.
+
+    <h1><?php echo MarkdownUnwrapped($text); ?></h1>
+    <a href="#"><?php echo MarkdownUnwrapped($text); ?></a>
 
 
 ### With Smarty ###
