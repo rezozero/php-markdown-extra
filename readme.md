@@ -151,6 +151,43 @@ If you are using MovableType 3.1 or later, the Smarty plugin folder is
 located at `(MT CGI root)/php/extlib/smarty/plugins`. This will allow 
 Markdown to work on dynamic pages.
 
+### With TWIG ###
+
+If your program use the [Twig][sm] template engine, PHP Markdown 
+can now be used as a filter for your templates. 
+Just include `markdown.php` in your Twig setup.
+
+  [sm]: http://twig.sensiolabs.org/
+
+
+	// Import Markdown parser
+	require_once "markdown.php";
+
+	// Import Twig Autoloader
+	require_once '/path/to/vendor/autoload.php';
+
+	// Create Twig environment
+	$loader = new Twig_Loader_String();
+	$twig = new Twig_Environment($loader);
+
+    // Create Markdown filters
+
+	$mdFilter = new Twig_SimpleFilter('markdown', function ($string) {
+	    return trim(Markdown($string));
+	}, array('is_safe' => array('html')));
+
+	$mduFilter = new Twig_SimpleFilter('markdown_unwrapped', function ($string) {
+	    return trim(MarkdownUnwrapped($string));
+	}, array('is_safe' => array('html')));
+
+	$twig->addFilter($mdFilter);
+	$twig->addFilter($mduFilter);
+
+Then you'll be able to parse markdown right into your Twig templates : 
+
+	<h1>{{ page.title|markdown_unwrapped }}</h1>
+	<div>{{ page.text|markdown }}</div>
+
 
 ### Updating Markdown in Other Programs ###
 
