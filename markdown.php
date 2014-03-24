@@ -61,7 +61,7 @@ function Markdown($text) {
 	}
 
 	# Transform text using parser.
-	return $parser->transform($text);
+	return trim($parser->transform($text));
 }
 
 /**
@@ -93,7 +93,7 @@ function MarkdownUnwrapped($text) {
 	}
 
 	# Transform text using parser.
-	return $parser->transform($text);
+	return trim($parser->transform($text));
 }
 
 ### WordPress Plugin Interface ###
