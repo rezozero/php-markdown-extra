@@ -173,11 +173,11 @@ Just include `markdown.php` in your Twig setup.
     // Create Markdown filters
 
 	$mdFilter = new Twig_SimpleFilter('markdown', function ($string) {
-	    return trim(Markdown($string));
+	    return Markdown($string);
 	}, array('is_safe' => array('html')));
 
 	$mduFilter = new Twig_SimpleFilter('markdown_unwrapped', function ($string) {
-	    return trim(MarkdownUnwrapped($string));
+	    return MarkdownUnwrapped($string);
 	}, array('is_safe' => array('html')));
 
 	$twig->addFilter($mdFilter);
